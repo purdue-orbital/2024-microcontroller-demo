@@ -1,0 +1,6 @@
+rustup target install thumbv6m-none-eabi
+cargo install elf2uf2-rs
+
+# IGNORE THESE \/
+cargo install cargo-binstall
+cargo binstall probe-rs-tools
