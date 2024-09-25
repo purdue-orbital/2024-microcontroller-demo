@@ -9,5 +9,5 @@ defmt-rtt = "0.4.1"
 embassy-executor = { version = "0.6.0",  features = ["task-arena-size-98304", "arch-cortex-m", "executor-thread", "executor-interrupt", "defmt", "integrated-timers"] }
 embassy-rp = { version = "0.2.0", features = ["defmt", "unstable-pac", "time-driver", "critical-section-impl"] }
 embassy-time = { version = "0.3.2", features = ["defmt", "defmt-timestamp-uptime"] }
-cortex-m-rt = "0.7.0"
-panic-probe = { version = "0.3", features = ["print-defmt"] }
+cortex-m-rt = "0.7.3"
+panic-probe = { version = "0.3.2", features = ["print-defmt"] }
