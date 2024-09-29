@@ -1,0 +1,1 @@
+Teaching club members to read acceleration from an accelerometer (specifally the MSA 301).
