@@ -3,24 +3,44 @@
 
 use defmt::*;
 use embassy_executor::Spawner;
+use embassy_rp::bind_interrupts;
+use embassy_rp::peripherals::{USB, I2C0};
+use embassy_rp::usb::{Driver, InterruptHandler};
 use embassy_rp::{gpio, i2c};
 use embassy_time::Timer;
+use embassy_usb_logger;
 use gpio::{Level, Output, Input, Pull};
 use {defmt_rtt as _, panic_probe as _};
 
 use embassy_time::Duration;
 
+mod msa301;
+
 const BMA_530_ADDRESS: u8 = 0x18;
+
+bind_interrupts!(struct Irqs {
+	I2C0_IRQ => InterruptHandler<I2C0>;
+	USBCTRL_IRQ => InterruptHandler<USB>;
+});
+
+#[embassy_executor::task]
+async fn logger_task(driver: Driver<'static, USB>) {
+	embassy_usb_logger::run!(1024, log::LevelFilter::Info, driver);
+}
 
 #[embassy_executor::main]
 async fn main(spawner: Spawner) {
 	let p = embassy_rp::init(Default::default());
 
-	// i2c pins
-    let sda = p.PIN_14;
-    let scl = p.PIN_15;
+	// setup logging
+	let driver = Driver::new(p.USB, Irqs);
+	spawner.spawn(logger_task(driver)).unwrap();
 
-	let mut i2c = i2c::I2c::new_async(p.I2C1, scl, sda, Irqs, Config::default());
+	// i2c pins
+    let sda = p.PIN_16;
+    let scl = p.PIN_17;
+
+	let mut i2c = i2c::I2c::new_async(p.I2C0, scl, sda, Irqs, i2c::Config::default());
 
 	let led_0 = Output::new(p.PIN_25, Level::Low);
 	let led_1 = Output::new(p.PIN_26, Level::High);
@@ -40,7 +60,6 @@ async fn main(spawner: Spawner) {
 	}
 
 	loop {
-
 		info!("Hello There!");
 	}
 }

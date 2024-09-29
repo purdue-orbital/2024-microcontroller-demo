@@ -11,3 +11,6 @@ embassy-rp = { version = "0.2.0", features = ["defmt", "unstable-pac", "time-dri
 embassy-time = { version = "0.3.2", features = ["defmt", "defmt-timestamp-uptime"] }
 cortex-m-rt = "0.7.3"
 panic-probe = { version = "0.3.2", features = ["print-defmt"] }
+embassy-usb-logger = "0.2.0"
+log = "0.4.22"
+embedded-hal = "1.0.0"

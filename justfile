@@ -8,6 +8,8 @@ check:
 setup:
 	rustup target install thumbv6m-none-eabi
 	cargo install elf2uf2-rs
+	cargo install cargo-binstall
+	cargo binstall probe-rs-tools
 
 clippy:
 	cargo clippy
